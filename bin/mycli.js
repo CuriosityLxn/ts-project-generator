@@ -1,11 +1,36 @@
 #!/usr/bin/env node
 'use strict';
 
-const { green } = require('chalk');
 const chalk = require('chalk');
 const colors = ['green', 'blue', 'yellow', 'red'];
 var commander = require('commander');
+var inquirer = require('inquirer');
 const consoleColors = {};
+const question = [
+  {
+    name: 'conf',
+    type: 'confirm',
+    message: '是否创建新的项目？'
+  },
+  {
+    name: 'name',
+    message: '请输入项目名称',
+    when: res => Boolean(res.conf)
+  },
+  {
+    name: 'author',
+    message: '请输入创建者',
+    when: res => Boolean(res.conf)
+  },
+  {
+    name: 'state',
+    type: 'list',
+    message: '选择公共管理状态',
+    choices: ['mobx', 'redux'],
+    filter: res => res.toLowerCase(),
+    when: res => Boolean(res.conf)
+  }
+];
 
 /* 终端文案颜色 */
 colors.forEach(color => {
@@ -28,8 +53,12 @@ commander
 commander
   .command('create')
   .description('create a project')
-  .action(() =>
-    consoleColors.green('Welcome to use mycli，it`s easy to build a TS project')
+  .action(
+    () =>
+      consoleColors.green(
+        'Welcome to use mycli，it`s easy to build a TS project'
+      ),
+    inquirer.prompt(question).then(answer => console.log('answer=', answer))
   );
 
 /* start 运行项目 */
