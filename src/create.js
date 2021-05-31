@@ -29,13 +29,11 @@ const revisePackageJson = (res, sourcePath) =>
 
 module.exports = res => {
   green('-----开始构建-----');
-
-  /* 找到template文件夹下的模版项目 */
-
-  blue('当前路径:' + process.cwd());
+  blue('当前路径:' + process.cwd()); // 找到template文件夹下的模版项目
 
   // 修改 package.json
   revisePackageJson(res, sourcePath).then(() =>
+    // 深拷贝 package.json 以外的文件和目录
     copy(sourcePath, process.cwd(), npm())
   );
 };
@@ -67,7 +65,7 @@ const copy = (sourcePath, currentPath, callback) => {
           const readSteam = fs.createReadStream(newSoursePath);
           const writeSteam = fs.createWriteStream(newCurrentPath);
           readSteam.pipe(writeSteam);
-          green('创建文件：', newCurrentPath);
+          green('创建文件：' + newCurrentPath);
           fileCount--;
           completeControl(callback);
         }
@@ -88,8 +86,8 @@ const copy = (sourcePath, currentPath, callback) => {
  * @param {*} callback     // 项目复制完成回调函数
  */
 const dirExist = (soursePath, currentPath, callback) => {
-  fs.existsSync(currentPath, exitItem => {
-    if (exitItem) return copy(soursePath, currentPath, callback);
+  fs.access(currentPath, err => {
+    if (!err) return copy(soursePath, currentPath, callback);
 
     fs.mkdir(currentPath, () => {
       fileCount--;

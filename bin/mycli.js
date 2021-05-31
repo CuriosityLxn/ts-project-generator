@@ -3,7 +3,7 @@
 
 var commander = require('commander');
 var inquirer = require('inquirer');
-const { green, blue, red, yellow } = require('../utils/colors');
+const { green, blue } = require('../utils/colors');
 const create = require('../src/create');
 const question = [
   {
