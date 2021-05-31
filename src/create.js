@@ -1,6 +1,8 @@
 let fileCount = 0; // 文件数量
 let dirCount = 0; // 文件夹数量
 let flat = 0; // readir 数量
+let isInstall = false; // install flag
+
 const fs = require('fs');
 const { green, blue, yellow } = require('../utils/colors');
 const sourcePath = __dirname.slice(0, -3) + 'template';
@@ -98,3 +100,21 @@ const dirExist = (soursePath, currentPath, callback) => {
     });
   });
 };
+
+const completeControl = callback => {
+  if (fileCount !== 0 || dirCount !== 0 || flat !== 0) return;
+
+  green('-----构建完成-----');
+
+  if (callback && !isInstall) {
+    isInstall = true;
+    blue('-----开始 Install-----');
+    callback(() => {
+      blue('-----完成 Install-----');
+      runProject();
+    });
+  }
+};
+
+const runProject = () => {};
+const npm = () => {};
