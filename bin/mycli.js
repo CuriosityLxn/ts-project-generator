@@ -5,6 +5,7 @@ var commander = require('commander');
 var inquirer = require('inquirer');
 const { green, blue } = require('../utils/colors');
 const create = require('../src/create');
+const start = require('../src/start');
 const question = [
   {
     name: 'conf',
@@ -53,13 +54,19 @@ commander
 commander
   .command('start')
   .description('project start')
-  .action(() => green('-----运行项目-----'));
+  .action(() => {
+    green('-----运行项目-----');
+    start('start').then(() => green('-------✅  ✅运行完成-------'));
+  });
 
 /* build 打包项目 */
 commander
   .command('build')
   .description('project build')
-  .action(() => green('-----构建项目-----'));
+  .action(() => {
+    green('-----构建项目-----');
+    start('build').then(() => green('-------✅  ✅构建完成-------'));
+  });
 
 commander.parse(process.argv);
 
