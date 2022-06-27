@@ -4,7 +4,8 @@ let flat = 0; // readir 数量
 let isInstall = false; // install flag
 
 const fs = require('fs');
-const { green, blue, yellow } = require('../utils/colors');
+const npm = require('./npm');
+const { green, blue, yellow, red } = require('../utils/colors');
 const sourcePath = __dirname.slice(0, -3) + 'template';
 
 const revisePackageJson = (res, sourcePath) =>
@@ -114,5 +115,11 @@ const completeControl = callback => {
   }
 };
 
-const runProject = () => {};
-const npm = () => {};
+const runProject = () => {
+  try {
+    const start = npm(['start']);
+    start();
+  } catch(e) {
+    red('自动启动失败，请手动npm start 启动项目');
+  }
+};
